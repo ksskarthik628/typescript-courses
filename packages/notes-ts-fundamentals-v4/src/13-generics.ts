@@ -20,19 +20,25 @@ const phoneDict = {
   },
   /*... and so on */
 }
-/*
-// interface PhoneInfo {
-//   customerId: string
-//   areaCode: string
-//   num: string
-// }
+
+interface PhoneInfo {
+  customerId: string
+  areaCode: string
+  num: string
+}
 
 // function listToDict(
 //   list: PhoneInfo[], // take the list as an argument
 //   idGen: (arg: PhoneInfo) => string, // a callback to get Ids
-// ): { [k: string]: PhoneInfo } {}
+// ): { [k: string]: PhoneInfo } {
+//   const dict: { [k: string]: PhoneInfo } = {};
+//   list.forEach((element) => {
+//     const dictKey = idGen(element)
+//     dict[dictKey] = element // store element under key
+//   })
+//   return dict;
+// }
 
-/*
 //? function body
 // // create an empty dictionary
 // const dict: { [k: string]: PhoneInfo } = {}
@@ -43,56 +49,58 @@ const phoneDict = {
 //   dict[dictKey] = element // store element under key
 // })
 
-// // return the dictionary
-// const result = listToDict(phoneList, (item) => item.customerId)
-// console.log(result)
-/*
+// return the dictionary
+const result = listToDict(phoneList, (item) => item.customerId)
+console.log(result)
+
 //? An attempt to generalize the above function to work with any type of list
 
-// function listToDict(
-//   list: PhoneInfo[], // take the list as an argument
-//   idGen: (arg: PhoneInfo) => string, // a callback to get Ids
+// function listToDict2(
+//   list: any[], // take the list as an argument
+//   idGen: (arg: any) => string, // a callback to get Ids
 // ): { [k: string]: any }
 
 //* Defining a type parameter
 
-/*
-// function listToDict<T>(
-//   list: T[],
-//   idGen: (arg: T) => string,
-// ): { [k: string]: T } {
-//   const dict: { [k: string]: T } = {}
-//   return dict
-// }
+function listToDict<T>(
+  list: T[],
+  idGen: (arg: T) => string,
+): { [k: string]: T } {
+  const dict: { [k: string]: T } = {}
+  list.forEach((element) => {
+    const dictKey = idGen(element)
+    dict[dictKey] = element
+  })
+  return dict
+}
 
-// function wrapInArray<T>(arg: T): [T] {
-//   return [arg]
-// }
-// wrapInArray(3)
-// //   ^?
-// wrapInArray(new Date())
-// //   ^?
-// wrapInArray(new RegExp("/s/"))
+function wrapInArray<T>(arg: T): [T] {
+  return [arg]
+}
+wrapInArray(3)
+//   ^?
+wrapInArray(new Date())
+//   ^?
+wrapInArray(new RegExp('/s/'))
 
-/*
 //? Let's try it!
-// listToDict(
-//   [
-//     new Date('10-01-2021'),
-//     new Date('03-14-2021'),
-//     new Date('06-03-2021'),
-//     new Date('09-30-2021'),
-//     new Date('02-17-2021'),
-//     new Date('05-21-2021'),
-//   ],
-//   (arg) => arg.toISOString(),
-// )
+listToDict(
+  [
+    new Date('10-01-2021'),
+    new Date('03-14-2021'),
+    new Date('06-03-2021'),
+    new Date('09-30-2021'),
+    new Date('02-17-2021'),
+    new Date('05-21-2021'),
+  ],
+  (arg) => arg.toISOString(),
+)
 
 //* Best practices
-/*
-// function returnAs<T>(arg: any): T {
-//     return arg //! an `any` that will _seem_ like a `T`
-// } // may as well just cast
+
+function returnAs<T>(arg: any): T {
+  return arg //! an `any` that will _seem_ like a `T`
+} // may as well just cast
 
 /**/
 export default {}
